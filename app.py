@@ -94,8 +94,8 @@ df = create_df_business_value(
 # plot
 fig = px.bar(
     df,
-    y="data_quality_label",
-    x="annual_savings",
+    x="data_quality_label",
+    y="annual_savings",
     color="data_quality_label",
     labels={
         "data_quality_label": "Datenqualität",
@@ -105,20 +105,19 @@ fig = px.bar(
     template="simple_white",
 )
 fig.update_layout(
-    showlegend=False, xaxis_visible=False, yaxis_visible=False, font_size=20
+    showlegend=False, xaxis_visible=False, yaxis_visible=False, font_size=14
 )
 
 fig.update_traces(
-    hovertemplate="Datenqualität: %{y} <br> Bis zu €%{x:,.0f} einsparen"
+    hovertemplate="Datenqualität: %{x} <br> Bis zu €%{y:,.0f} einsparen"
 )
 fig.add_annotation(
     text="Jährliche Ersparnis <br>je nach Datenqualität",
     xref="paper",
     yref="paper",
-    x=0.8,
+    x=0.05,
     y=0.95,
     showarrow=False,
-    font_size=20,
 )
 
 st.plotly_chart(fig, use_container_width=True)
