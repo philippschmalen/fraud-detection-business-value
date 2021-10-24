@@ -1,0 +1,19 @@
+.highlight {
+    text-align: center;
+    font-size: x-large;
+    border-radius: 0.4rem;
+    color: white;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .bold {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    font-weight: 600;
+  }
+  .red {
+    background-color: lightcoral;
+  }
+  .blue {
+    background-color: lightblue;
+  }

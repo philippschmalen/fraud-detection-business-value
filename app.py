@@ -3,69 +3,90 @@ import plotly.express as px
 from src.utils import create_df_business_value
 from src.utils import calc_savings
 
+# from src.utils import local_css
+
 st.set_page_config(
-    page_title=" Testpage",
+    page_title="Fraud solutions business value",
     page_icon="src/favicon_triangle.png",
     layout="centered",
     initial_sidebar_state="collapsed",
 )
 
-st.title("Calculate business value")
+
+def local_css(file_name):
+    """https://discuss.streamlit.io/t/are-you-using-html-in-markdown-tell-us-why/96/25"""
+    with open(file_name) as f:
+        st.markdown(
+            "<style>{}</style>".format(f.read()), unsafe_allow_html=True
+        )
 
 
+local_css(file_name="src/style.css")
+
+
+# events count
 c1 = st.container()
-c1.subheader("Daily events")
-events = c1.slider(
-    label="",
-    value=200,
-    min_value=0,
-    max_value=1000,
-    step=25,
-    kwargs={"font-size": "100px"},
-)
+c1.write("##### Tägliche Events insegsamt")
+events = c1.slider(label="", value=300, min_value=0, max_value=1000, step=25)
 
-# "---"
-
+# fraud rate
 c2 = st.container()
-c2.subheader("Fraud rate")
-fraud_rate = c2.slider("%", 0, 100, step=5, value=10)
+c2.write("##### davon Betrug")
+fraud_rate = c2.slider("%", 1, 50, step=1, value=7)
 
-# "---"
-
+# fraud value
 c3 = st.container()
-c3.subheader("Event value")
-fraud_value = c3.slider(
-    label="EUR", value=10, min_value=0, max_value=100, step=5
-)
+c3.write("##### durchschnittlicher Betrugswert (EUR)")
+fraud_value = c3.slider(label="", value=10, min_value=0, max_value=100, step=5)
 
-# "---"
+# data quality
+data_quality_labels = ["Niedrig", "Mittel", "Hoch"]
 
 c4 = st.container()
-c4.subheader("Data quality")
-data_quality_labels = ["basic", "solid", "great"]
-data_quality = (
-    c4.radio(
-        label="",
-        options=range(len(data_quality_labels)),
-        format_func=lambda x: data_quality_labels[x],
-    )
-    + 1
-)
-st.write(
-    "<style>div.row-widget.stRadio > div{flex-direction:row;}</style>",
-    unsafe_allow_html=True,
-)
+c4_col1, c4_col2 = st.columns(2)
+with c4:
+    with c4_col1:
+        st.write("##### Wie gut sind meine Daten?")
+        data_quality = (
+            st.radio(
+                label="",
+                options=range(len(data_quality_labels)),
+                format_func=lambda x: data_quality_labels[x],
+            )
+            + 1
+        )
+        savings_daily, savings_annual = calc_savings(
+            events, fraud_rate, fraud_value, data_quality, data_quality_labels
+        )
+        st.write(
+            "<style>div.row-widget.stRadio > div{flex-direction:row;}</style>",
+            unsafe_allow_html=True,
+        )
+
+    with c4_col2:
+        data_infobox = st.expander(label="Entscheidend sind 2 Faktoren")
+        with data_infobox:
+            st.markdown(
+                """
+            1. Mehr als ca. 150 Events/Tag <br>
+            2. Betrug ist eindeutig identifizierbar
+            """,
+                unsafe_allow_html=True,
+            )
+
+t = f"""
+    <div>
+        <span class='highlight blue'>
+            Bis zu
+            <span class='bold'>€ {savings_daily:,.0f} täglich </span>
+            einsparen ➟
+            <span class='bold'> € {savings_annual:,.0f} jährlich </span>
+        </span>
+    </div>"""
+st.markdown(t, unsafe_allow_html=True)
 
 
-savings_daily, savings_annual = calc_savings(
-    events, fraud_rate, fraud_value, data_quality, data_quality_labels
-)
-
-
-st.header(
-    f"Save each day up to € {savings_daily:,.0f} ➟ € {savings_annual:,.0f} annually"
-)
-
+"---"
 
 df = create_df_business_value(
     data_quality_labels, events, fraud_value, fraud_rate
@@ -78,15 +99,27 @@ fig = px.bar(
     y="annual_savings",
     color="data_quality_label",
     labels={
-        "data_quality_label": "Data quality",
-        "annual_savings": "Annual savings",
+        "data_quality_label": "Datenqualität",
+        "annual_savings": "Jährliche Ersparnis",
     },
     text="annual_savings_label",
     template="simple_white",
 )
-fig.update_layout(showlegend=False)
+fig.update_layout(
+    showlegend=False, xaxis_visible=True, yaxis_visible=False, font_size=24
+)
+
 fig.update_traces(
-    hovertemplate="%{x} data quality <br> €%{y:,.0f}<extra></extra>"
+    hovertemplate="Datenqualität: %{x} <br> Bis zu €%{y:,.0f} einsparen"
+)
+fig.add_annotation(
+    text="Jährliche Ersparnis <br>je nach Datenqualität",
+    xref="paper",
+    yref="paper",
+    x=0.05,
+    y=0.95,
+    showarrow=False,
+    font_size=24,
 )
 
 st.plotly_chart(fig)

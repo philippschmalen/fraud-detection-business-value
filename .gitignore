@@ -12,6 +12,7 @@
 !/.flake8
 !/.gitignore
 !.gitkeep
+!.streamlit
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
