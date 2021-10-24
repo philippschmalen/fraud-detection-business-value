@@ -77,7 +77,7 @@ with c4:
 
 t = f"""
     <div>
-        Business value bis zu
+        Business value bis zu <br>
         <span class='highlight bold blue'>
             € {savings_annual:,.0f} jährlich
         </span>
