@@ -1,15 +1,17 @@
 import streamlit as st
 import plotly.express as px
-import pandas as pd
+from src.utils import create_df_business_value
+from src.utils import calc_savings
 
 st.set_page_config(
     page_title=" Testpage",
-    page_icon="👁⃤",
-    layout="wide",
+    page_icon="src/favicon_triangle.png",
+    layout="centered",
     initial_sidebar_state="collapsed",
 )
 
 st.title("Calculate business value")
+
 
 c1 = st.container()
 c1.subheader("Daily events")
@@ -54,35 +56,22 @@ st.write(
     unsafe_allow_html=True,
 )
 
-"---"
 
-savings_daily = (events * (fraud_rate / 100) * fraud_value) * (
-    data_quality / len(data_quality_labels)
+savings_daily, savings_annual = calc_savings(
+    events, fraud_rate, fraud_value, data_quality, data_quality_labels
 )
-savings_annual = savings_daily * 365
-
-st.header(f"Save each day up to {savings_daily:,.0f}€")
-st.header(f"Estiamted savings ~{savings_annual:,.0f}€ annually")
 
 
-df_len = len(data_quality_labels)
-df = pd.DataFrame(
-    {
-        "events": [events] * df_len,
-        "data_quality_label": data_quality_labels,
-        "data_quality": range(1, df_len + 1),
-        "fraud_value": [fraud_value] * df_len,
-        "fraud_rate": [fraud_rate] * df_len,
-    }
-).assign(
-    annual_savings=lambda x: (
-        (x.events * (x.fraud_rate / 100)) * x.fraud_value * 365
-    )
-    * (x.data_quality / df_len)
+st.header(
+    f"Save each day up to € {savings_daily:,.0f} ➟ € {savings_annual:,.0f} annually"
 )
-"", df
 
 
+df = create_df_business_value(
+    data_quality_labels, events, fraud_value, fraud_rate
+)
+
+# plot
 fig = px.bar(
     df,
     x="data_quality_label",
@@ -92,6 +81,12 @@ fig = px.bar(
         "data_quality_label": "Data quality",
         "annual_savings": "Annual savings",
     },
+    text="annual_savings_label",
+    template="simple_white",
+)
+fig.update_layout(showlegend=False)
+fig.update_traces(
+    hovertemplate="%{x} data quality <br> €%{y:,.0f}<extra></extra>"
 )
 
 st.plotly_chart(fig)
