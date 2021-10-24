@@ -27,7 +27,7 @@ st.title("Fraud Solution Architects - Business value")
 
 # events count
 c1 = st.container()
-c1.write("##### Tägliche Events insegsamt")
+c1.write("##### Tägliche Events insgesamt")
 events = c1.slider(label="", value=300, min_value=0, max_value=1000, step=25)
 
 # fraud rate
