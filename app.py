@@ -121,4 +121,4 @@ fig.add_annotation(
     font_size=20,
 )
 
-st.plotly_chart(fig)
+st.plotly_chart(fig, use_container_width=True)
