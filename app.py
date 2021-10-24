@@ -31,7 +31,7 @@ events = c1.slider(label="", value=300, min_value=0, max_value=1000, step=25)
 
 # fraud rate
 c2 = st.container()
-c2.write("##### davon Betrug")
+c2.write("##### davon Betrug (%)")
 fraud_rate = c2.slider("%", 1, 50, step=1, value=7)
 
 # fraud value
