@@ -23,7 +23,8 @@ def local_css(file_name):
 
 local_css(file_name="src/style.css")
 
-st.title("Fraud Solution Architects - Business value")
+st.title("Fraud Solution Architects")
+st.subheader("Business Value Rechner")
 
 # events count
 c1 = st.container()
