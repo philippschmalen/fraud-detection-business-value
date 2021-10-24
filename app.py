@@ -74,13 +74,12 @@ with c4:
                 unsafe_allow_html=True,
             )
 
+
 t = f"""
     <div>
-        <span class='highlight blue'>
-            Bis zu
-            <span class='bold'>€ {savings_daily:,.0f} täglich </span>
-            einsparen ➟
-            <span class='bold'> € {savings_annual:,.0f} jährlich </span>
+        Business value bis zu
+        <span class='highlight bold blue'>
+            € {savings_annual:,.0f} jährlich
         </span>
     </div>"""
 st.markdown(t, unsafe_allow_html=True)
@@ -95,8 +94,8 @@ df = create_df_business_value(
 # plot
 fig = px.bar(
     df,
-    x="data_quality_label",
-    y="annual_savings",
+    y="data_quality_label",
+    x="annual_savings",
     color="data_quality_label",
     labels={
         "data_quality_label": "Datenqualität",
@@ -106,20 +105,20 @@ fig = px.bar(
     template="simple_white",
 )
 fig.update_layout(
-    showlegend=False, xaxis_visible=True, yaxis_visible=False, font_size=24
+    showlegend=False, xaxis_visible=False, yaxis_visible=False, font_size=20
 )
 
 fig.update_traces(
-    hovertemplate="Datenqualität: %{x} <br> Bis zu €%{y:,.0f} einsparen"
+    hovertemplate="Datenqualität: %{y} <br> Bis zu €%{x:,.0f} einsparen"
 )
 fig.add_annotation(
     text="Jährliche Ersparnis <br>je nach Datenqualität",
     xref="paper",
     yref="paper",
-    x=0.05,
+    x=0.8,
     y=0.95,
     showarrow=False,
-    font_size=24,
+    font_size=20,
 )
 
 st.plotly_chart(fig)
