@@ -45,36 +45,33 @@ fraud_value = c3.slider(label="", value=10, min_value=0, max_value=100, step=5)
 data_quality_labels = ["Niedrig", "Mittel", "Hoch"]
 
 c4 = st.container()
-c4_col1, c4_col2 = st.columns(2)
+
 with c4:
-    with c4_col1:
-        st.write("##### Wie gut sind meine Daten?")
-        data_quality = (
-            st.radio(
-                label="",
-                options=range(len(data_quality_labels)),
-                format_func=lambda x: data_quality_labels[x],
-            )
-            + 1
-        )
-        savings_daily, savings_annual = calc_savings(
-            events, fraud_rate, fraud_value, data_quality, data_quality_labels
-        )
-        st.write(
-            "<style>div.row-widget.stRadio > div{flex-direction:row;}</style>",
+    st.write("##### Wie gut sind meine Daten?")
+    data_infobox = st.expander(label="Entscheidend sind 2 Faktoren")
+    with data_infobox:
+        st.markdown(
+            """
+        1. Mehr als ca. 150 Events/Tag <br>
+        2. Betrug ist eindeutig identifizierbar
+        """,
             unsafe_allow_html=True,
         )
-
-    with c4_col2:
-        data_infobox = st.expander(label="Entscheidend sind 2 Faktoren")
-        with data_infobox:
-            st.markdown(
-                """
-            1. Mehr als ca. 150 Events/Tag <br>
-            2. Betrug ist eindeutig identifizierbar
-            """,
-                unsafe_allow_html=True,
-            )
+    data_quality = (
+        st.radio(
+            label="",
+            options=range(len(data_quality_labels)),
+            format_func=lambda x: data_quality_labels[x],
+        )
+        + 1
+    )
+    savings_daily, savings_annual = calc_savings(
+        events, fraud_rate, fraud_value, data_quality, data_quality_labels
+    )
+    st.write(
+        "<style>div.row-widget.stRadio > div{flex-direction:row;}</style>",
+        unsafe_allow_html=True,
+    )
 
 
 t = f"""
