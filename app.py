@@ -23,31 +23,31 @@ def local_css(file_name):
 
 local_css(file_name="src/style.css")
 
-st.title("Fraud Solution Architects")
-st.subheader("Business Value Rechner")
+# st.title("Fraud Solution Architects")
+# st.subheader("Business Value Rechner")
 
 # events count
 c1 = st.container()
-c1.write("##### Tägliche Events insgesamt")
+c1.write("###### Tägliche Events insgesamt")
 events = c1.slider(label="", value=300, min_value=0, max_value=1000, step=25)
 
 # fraud rate
 c2 = st.container()
-c2.write("##### davon Betrug (%)")
+c2.write("###### davon Betrug (%)")
 fraud_rate = c2.slider("%", 1, 50, step=1, value=7)
 
 # fraud value
 c3 = st.container()
-c3.write("##### durchschnittlicher Betrugswert (EUR)")
+c3.write("###### durchschnittlicher Betrugswert (EUR)")
 fraud_value = c3.slider(label="", value=10, min_value=0, max_value=100, step=5)
 
 # data quality
-data_quality_labels = ["Niedrig", "Mittel", "Hoch"]
+data_quality_labels = ["Niedrig", "Hoch"]
 
 c4 = st.container()
 
 with c4:
-    st.write("##### Wie gut sind meine Daten?")
+    st.write("###### Wie gut sind meine Daten?")
     data_infobox = st.expander(label="Entscheidend sind 2 Faktoren")
     with data_infobox:
         st.markdown(
