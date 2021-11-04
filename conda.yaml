@@ -1,10 +1,11 @@
 name: fsa-calc
 channels:
-  - defaults
   - conda-forge
+  - defaults
 dependencies:
   - python=3.9
   - flake8
+  - black
   - streamlit
   - plotly
   - pre-commit

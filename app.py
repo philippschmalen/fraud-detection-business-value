@@ -42,7 +42,10 @@ c3.write("###### durchschnittlicher Betrugswert (EUR)")
 fraud_value = c3.slider(label="", value=10, min_value=0, max_value=100, step=5)
 
 # data quality
-data_quality_labels = ["Niedrig", "Hoch"]
+data_quality_labels = [
+    "Ausreichend",
+    "Viele Events + Betrug eindeutig identifizierbar",
+]
 
 c4 = st.container()
 
@@ -73,15 +76,16 @@ with c4:
         unsafe_allow_html=True,
     )
 
-
-t = f"""
-    <div>
-        Business value bis zu <br>
-        <span class='highlight bold blue'>
-            € {savings_annual:,.0f} jährlich
-        </span>
-    </div>"""
-st.markdown(t, unsafe_allow_html=True)
+# business value
+st.metric("Annual value", f"€ {savings_annual:,.0f}")
+# t = f"""
+#     <div>
+#         Business value bis zu <br>
+#         <span class='highlight bold blue'>
+#             € {savings_annual:,.0f} jährlich
+#         </span>
+#     </div>"""
+# st.markdown(t, unsafe_allow_html=True)
 
 
 "---"
@@ -91,32 +95,32 @@ df = create_df_business_value(
 )
 
 # plot
-fig = px.bar(
-    df,
-    x="data_quality_label",
-    y="annual_savings",
-    color="data_quality_label",
-    labels={
-        "data_quality_label": "Datenqualität",
-        "annual_savings": "Jährliche Ersparnis",
-    },
-    text="annual_savings_label",
-    template="simple_white",
-)
-fig.update_layout(
-    showlegend=False, xaxis_visible=False, yaxis_visible=False, font_size=14
-)
+# fig = px.bar(
+#     df,
+#     x="data_quality_label",
+#     y="annual_savings",
+#     color="data_quality_label",
+#     labels={
+#         "data_quality_label": "Datenqualität",
+#         "annual_savings": "Jährliche Ersparnis",
+#     },
+#     text="annual_savings_label",
+#     template="simple_white",
+# )
+# fig.update_layout(
+#     showlegend=False, xaxis_visible=False, yaxis_visible=False, font_size=14
+# )
 
-fig.update_traces(
-    hovertemplate="Datenqualität: %{x} <br> Bis zu €%{y:,.0f} einsparen"
-)
-fig.add_annotation(
-    text="Jährliche Ersparnis <br>je nach Datenqualität",
-    xref="paper",
-    yref="paper",
-    x=0.05,
-    y=0.95,
-    showarrow=False,
-)
+# fig.update_traces(
+#     hovertemplate="Datenqualität: %{x} <br> Bis zu €%{y:,.0f} einsparen"
+# )
+# fig.add_annotation(
+#     text="Jährliche Ersparnis <br>je nach Datenqualität",
+#     xref="paper",
+#     yref="paper",
+#     x=0.05,
+#     y=0.95,
+#     showarrow=False,
+# )
 
-st.plotly_chart(fig, use_container_width=True)
+# st.plotly_chart(fig, use_container_width=True)
