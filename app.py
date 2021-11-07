@@ -39,7 +39,7 @@ fraud_rate = c2.slider("%", 1, 50, step=1, value=7)
 # fraud value
 c3 = st.container()
 c3.write("###### durchschnittlicher Betrugswert (EUR)")
-fraud_value = c3.slider(label="", value=10, min_value=0, max_value=100, step=5)
+fraud_value = c3.slider(label="", value=10, min_value=0, max_value=100, step=1)
 
 # data quality
 data_quality_labels = [
