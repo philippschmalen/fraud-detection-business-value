@@ -2,8 +2,9 @@ import streamlit as st
 import plotly.express as px
 from src.utils import create_df_business_value
 from src.utils import calc_savings
+from src.utils import local_css
 
-# from src.utils import local_css
+# from src.plots import plot_bar_value
 
 st.set_page_config(
     page_title="Fraud solutions business value",
@@ -13,18 +14,8 @@ st.set_page_config(
 )
 
 
-def local_css(file_name):
-    """https://discuss.streamlit.io/t/are-you-using-html-in-markdown-tell-us-why/96/25"""
-    with open(file_name) as f:
-        st.markdown(
-            "<style>{}</style>".format(f.read()), unsafe_allow_html=True
-        )
-
-
 local_css(file_name="src/style.css")
 
-# st.title("Fraud Solution Architects")
-# st.subheader("Business Value Rechner")
 
 # events count
 c1 = st.container()
@@ -78,14 +69,6 @@ with c4:
 
 # business value
 st.metric("Annual value", f"€ {savings_annual:,.0f}")
-# t = f"""
-#     <div>
-#         Business value bis zu <br>
-#         <span class='highlight bold blue'>
-#             € {savings_annual:,.0f} jährlich
-#         </span>
-#     </div>"""
-# st.markdown(t, unsafe_allow_html=True)
 
 
 "---"
@@ -95,32 +78,12 @@ df = create_df_business_value(
 )
 
 # plot
-# fig = px.bar(
+# fig = plot_bar_value(
 #     df,
 #     x="data_quality_label",
 #     y="annual_savings",
-#     color="data_quality_label",
-#     labels={
-#         "data_quality_label": "Datenqualität",
-#         "annual_savings": "Jährliche Ersparnis",
-#     },
-#     text="annual_savings_label",
-#     template="simple_white",
-# )
-# fig.update_layout(
-#     showlegend=False, xaxis_visible=False, yaxis_visible=False, font_size=14
-# )
-
-# fig.update_traces(
-#     hovertemplate="Datenqualität: %{x} <br> Bis zu €%{y:,.0f} einsparen"
-# )
-# fig.add_annotation(
-#     text="Jährliche Ersparnis <br>je nach Datenqualität",
-#     xref="paper",
-#     yref="paper",
-#     x=0.05,
-#     y=0.95,
-#     showarrow=False,
+#     x_label="Datenqualität",
+#     y_label="Jährliche Ersparnis",
 # )
 
 # st.plotly_chart(fig, use_container_width=True)
