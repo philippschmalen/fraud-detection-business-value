@@ -5,15 +5,6 @@
 *.pkl
 *.log
 
-# all dotfiles except listed
-.*
-!/.gitlab-ci
-!/.pre-commit-config
-!/.flake8
-!/.gitignore
-!.gitkeep
-!.streamlit
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

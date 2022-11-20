@@ -1,8 +1,7 @@
-import streamlit as st
 import plotly.express as px
-from src.utils import create_df_business_value
-from src.utils import calc_savings
-from src.utils import local_css
+import streamlit as st
+
+from src.utils import calc_savings, create_df_business_value, local_css
 
 # from src.plots import plot_bar_value
 
@@ -19,35 +18,35 @@ local_css(file_name="src/style.css")
 
 # events count
 c1 = st.container()
-c1.write("###### Tägliche Events insgesamt")
+c1.write("###### Number of daily events or transactions")
 events = c1.slider(label="", value=300, min_value=0, max_value=1000, step=25)
 
 # fraud rate
 c2 = st.container()
-c2.write("###### davon Betrug (%)")
+c2.write("###### of which fraud (%)")
 fraud_rate = c2.slider("%", 1, 50, step=1, value=7)
 
 # fraud value
 c3 = st.container()
-c3.write("###### durchschnittlicher Betrugswert (EUR)")
+c3.write("###### average fraud value (EUR)")
 fraud_value = c3.slider(label="", value=10, min_value=0, max_value=100, step=1)
 
 # data quality
 data_quality_labels = [
-    "Ausreichend",
-    "Viele Events + Betrug eindeutig identifizierbar",
+    "few events OR fraud rarely identifyable",
+    "many events AND fraud clearly identifyable",
 ]
 
 c4 = st.container()
 
 with c4:
-    st.write("###### Wie gut sind meine Daten?")
-    data_infobox = st.expander(label="Entscheidend sind 2 Faktoren")
+    st.write("###### How well is my data quality?")
+    data_infobox = st.expander(label="Two factors are crucial")
     with data_infobox:
         st.markdown(
             """
-        1. Mehr als ca. 150 Events/Tag <br>
-        2. Betrug ist eindeutig identifizierbar
+        1. More than 150 events/day <br>
+        2. Fraud clearly identifyable in data
         """,
             unsafe_allow_html=True,
         )
@@ -73,9 +72,7 @@ st.metric("Annual value", f"€ {savings_annual:,.0f}")
 
 "---"
 
-df = create_df_business_value(
-    data_quality_labels, events, fraud_value, fraud_rate
-)
+df = create_df_business_value(data_quality_labels, events, fraud_value, fraud_rate)
 
 # plot
 # fig = plot_bar_value(
